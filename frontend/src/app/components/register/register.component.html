@@ -1,0 +1,21 @@
+<div class="register-container">
+  <form (ngSubmit)="onSubmit()" class="register-form">
+        <img src="logo.png" class="logo">
+    <h2 class="login">Registro</h2>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="userData.nombre" name="firstName" placeholder="Nombre" required>
+    </div>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="userData.apellido" name="lastName" placeholder="Apellido" required>
+    </div>
+    <div class="form-group">
+      <input type="email" [(ngModel)]="userData.email" name="email" placeholder="Correo electrónico" required>
+    </div>
+    <div class="form-group">
+      <input type="password" [(ngModel)]="userData.password" name="password" placeholder="Contraseña" required>
+    </div>
+    <button type="submit">Registrate</button>
+    <div *ngIf="error" class="error">{{error}}</div>
+    <p><a routerLink="/login" class="registrate">¿Ya tienes una cuenta? Iniciar sesión</a></p>
+  </form>
+</div>

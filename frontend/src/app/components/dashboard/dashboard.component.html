@@ -1,0 +1,70 @@
+<div class="dashboard">
+  <header class="header">
+    <div class="user-info">
+      <h2>Bienvenido, {{currentUser?.nombre}} {{currentUser?.apellido}} ({{currentUser?.email}})</h2>
+    </div>
+    <button (click)="logout()" class="logout-btn">Cerrar Sesión</button>
+  </header>
+
+  <main class="main-content">
+    <div class="actions">
+      <button (click)="showForm = !showForm" class="add-btn">
+        {{showForm ? 'Cancelar' : 'Agregar Actividad'}}
+      </button>
+    </div>
+
+    <form *ngIf="showForm" (ngSubmit)="onSubmit()" #activityForm="ngForm" class="activity-form">
+  <h3>{{editingActivity ? 'Editar' : 'Agregar'}} Actividad</h3>
+
+  <div class="form-row">
+    <input type="text" [(ngModel)]="newActivity.titulo" name="titulo" placeholder="Nombre de la Actividad" required>
+  </div>
+
+  <div class="form-row">
+    <div class="date-time-group">
+      <label>Fecha de Inicio:</label>
+      <input type="date" [(ngModel)]="newActivity.fechaInicio" name="fechaInicio" required>
+      <input type="time" [(ngModel)]="newActivity.horaInicio" name="horaInicio" required>
+    </div>
+
+    <div class="date-time-group">
+      <label>Fecha de Fin:</label>
+      <input type="date" [(ngModel)]="newActivity.fechaFin" name="fechaFin" required>
+      <input type="time" [(ngModel)]="newActivity.horaFin" name="horaFin" required>
+    </div>
+  </div>
+
+  <textarea [(ngModel)]="newActivity.descripcion" name="descripcion" placeholder="Comentarios" rows="3"></textarea>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="!activityForm.form.valid">
+      {{editingActivity ? 'Actualizar' : 'Agregar'}}
+    </button>
+    <button type="button" (click)="resetForm()">Cancelar</button>
+  </div>
+</form>
+
+
+    <div class="activities-list">
+      <h3>Actividades</h3>
+      <div *ngIf="activities.length === 0" class="no-activities">
+        No se encontraron actividades. ¡Agrega tu primera actividad!
+      </div>
+      <div *ngFor="let activity of activities" class="activity-card">
+        <div class="activity-header">
+          <h4>{{activity.titulo}}</h4>
+          <div class="activity-actions">
+            <button (click)="editActivity(activity)" class="edit-btn">Editar</button>
+            <button (click)="deleteActivity(activity.id!)" class="delete-btn">Eliminar</button>
+          </div>
+        </div>
+        <div class="activity-details">
+          <p><strong>Inicio:</strong> {{activity.fechaCreacion | date:'short'}}</p>
+          <p><strong>Fin:</strong> {{activity.fechaVencimiento | date:'short'}}</p>
+          <p><strong>Horas:</strong> {{calculateHours(activity.fechaCreacion, activity.fechaVencimiento) | number:'1.1-1'}}</p>
+          <p><strong>Comentarios:</strong> {{activity.descripcion}}</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
